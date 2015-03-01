@@ -1,0 +1,74 @@
+## -*- coding: utf-8 -*-
+<%inherit file="/_site.html"/>
+<%block name="title">Donations</%block>
+<%block name="head">
+    ${parent.head()}
+    % if config['PRODUCTION']:
+	<link rel="stylesheet" type="text/css" href="/static/css/index.min.css" />
+    % else:
+	<link rel="stylesheet/less" type="text/css" href="/static/index/index.less" />
+    % endif
+</%block>
+
+<div ng-controller="donateController">
+	<div class="container">
+	    <script src="https://apis.google.com/js/platform.js" async defer></script>
+	    <div style="float:right;"><g:plusone></g:plusone></div>
+	    <ul class="languages">
+		<li><a href="/he">עברית</a></li>
+		<li><a href="/he">English</a></li>
+		<li><a href="/ar">العربية</a></li>
+		<li><a href="/ru">русский</a></li>
+		<li><a href="/fr">français</a></li>
+		<li><a href="/es">español</a></li>
+	    </ul>
+	    <hr/>
+	    <h1><img alt="Dimona Loves Animals" src="/static/images/dla-logo.png" style="float:right; margin-right:15px; width: 75px;"/></h1>
+	    <h2>Tell us what we should do more...</h2>
+	    <p class="lead">...and put your money where your mouth is ;)</p>
+
+	    <i class="fa fa-4x fa-spinner fa-spin"></i>
+
+	    <form role="form">
+		<div class="panel panel-default" style="display:none">
+		    <div class="panel-body">
+			<div id="slider-parent"></div>
+		    </div>
+		</div>
+	    </form>
+	</div>
+
+	<div class="overall" style="display:none;">
+	    <div class="container">
+		<div class="media col-sm-8">
+		    <div class="media-left">
+			<a href="#" class="hidden">
+			    <img class="media-object" src="{{'{{image}}'}}" alt="...">
+			</a>
+		    </div>
+		    <div class="media-body">
+			<h4 class="media-heading">The same price as</h4>
+			<p>{{ '{{item}}' }}</p>
+			<p>₪{{'{{price}}'}}</p>
+		    </div>
+		</div>
+		<div class="col-sm-4">
+		    <p id="sum">Your contribution: <span class="label label-default contrib">₪{{ '{{slider0 + slider1 + slider2 + slider3 +slider4 + slider5+slider6+slider7+slider8+slider9}}' }}</span></p>
+		    <button class="btn btn-primary"><i class="fa fa-paw"></i> Donate with PayPal</button>
+		</div>
+	    </div>
+	</div>
+</div>
+
+<%block name="postbody">
+    % if config['PRODUCTION']:
+	<script src="/static/js/index.min.js" type="text/javascript"></script>
+    % else:
+	<script src="/static/index/index.js" type="text/javascript"></script>
+	<script type="text/javascript">
+	    $( document ).ready(function() {
+	        createSliders({{ config.DONATE_AREAS }}, {{ items|safe }});
+	    });
+	</script>
+    % endif
+</%block>
