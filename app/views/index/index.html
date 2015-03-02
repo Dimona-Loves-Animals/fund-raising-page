@@ -1,6 +1,7 @@
 ## -*- coding: utf-8 -*-
 <%inherit file="/_site.html"/>
-<%block name="title">Donations</%block>
+
+<%block name="title">{% trans %}Donations{% endtrans %}</%block>
 <%block name="head">
     ${parent.head()}
     % if config['PRODUCTION']:
@@ -13,19 +14,28 @@
 <div ng-controller="donateController">
 	<div class="container">
 	    <script src="https://apis.google.com/js/platform.js" async defer></script>
+	    {% if rtl %}
+	    <div style="float:left;"><g:plusone></g:plusone></div>
+	    <ul class="languages languages-rtl">
+	    {% else %}
 	    <div style="float:right;"><g:plusone></g:plusone></div>
 	    <ul class="languages">
+	    {% endif %}
 		<li><a href="/he">עברית</a></li>
-		<li><a href="/he">English</a></li>
+		<li><a href="/en">English</a></li>
 		<li><a href="/ar">العربية</a></li>
 		<li><a href="/ru">русский</a></li>
 		<li><a href="/fr">français</a></li>
 		<li><a href="/es">español</a></li>
 	    </ul>
 	    <hr/>
+	    {% if rtl %}
+	    <h1><img alt="Dimona Loves Animals" src="/static/images/dla-logo.png" style="float:left; margin-right:15px; width: 75px;"/></h1>
+	    {% else %}
 	    <h1><img alt="Dimona Loves Animals" src="/static/images/dla-logo.png" style="float:right; margin-right:15px; width: 75px;"/></h1>
-	    <h2>Tell us what we should do more...</h2>
-	    <p class="lead">...and put your money where your mouth is ;)</p>
+	    {% endif %}
+	    <h2>{% trans %}Tell us what we should do more...{% endtrans %}</h2>
+	    <p class="lead">{% trans %}...and put your money where your mouth is ;){% endtrans %}</p>
 
 	    <i class="fa fa-4x fa-spinner fa-spin"></i>
 
@@ -41,20 +51,24 @@
 	<div class="overall" style="display:none;">
 	    <div class="container">
 		<div class="media col-sm-8">
+		    {% if rtl %}
+		    <div class="media-right">
+		    {% else %}
 		    <div class="media-left">
-			<a href="#" class="hidden">
+		    {% endif %}
+			<a href="">
 			    <img class="media-object" src="{{'{{image}}'}}" alt="...">
 			</a>
 		    </div>
 		    <div class="media-body">
-			<h4 class="media-heading">The same price as</h4>
+			<h4 class="media-heading">{% trans %}The same price as{% endtrans %}</h4>
 			<p>{{ '{{item}}' }}</p>
 			<p>₪{{'{{price}}'}}</p>
 		    </div>
 		</div>
 		<div class="col-sm-4">
-		    <p id="sum">Your contribution: <span class="label label-default contrib">₪{{ '{{slider0 + slider1 + slider2 + slider3 +slider4 + slider5+slider6+slider7+slider8+slider9}}' }}</span></p>
-		    <button class="btn btn-primary"><i class="fa fa-paw"></i> Donate with PayPal</button>
+		    <p id="sum">{% trans %}Your contribution{% endtrans %}: <span class="label label-default contrib">₪{{ '{{slider0 + slider1 + slider2 + slider3 +slider4 + slider5+slider6+slider7+slider8+slider9}}' }}</span></p>
+		    <button class="btn btn-primary"><i class="fa fa-paw"></i> {% trans %}Donate with{% endtrans %} PayPal</button>
 		</div>
 	    </div>
 	</div>
@@ -67,7 +81,7 @@
 	<script src="/static/index/index.js" type="text/javascript"></script>
 	<script type="text/javascript">
 	    $( document ).ready(function() {
-	        createSliders({{ config.DONATE_AREAS }}, {{ items|safe }});
+	        createSliders({{ areas|safe }}, {{ items|safe }});
 	    });
 	</script>
     % endif

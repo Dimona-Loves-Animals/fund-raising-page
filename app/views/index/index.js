@@ -81,7 +81,7 @@ function createSliders(sliders, items) {
 		    if (Number( item.price ) >= sum) {
 			$scope.item=item.text;
 			$scope.price=item.price;
-			$scope.image='http://donate.etcs.me/static/images/dla-logo.png';
+			$scope.image='http://vignette1.wikia.nocookie.net/fantendo/images/b/bc/MK7_Item_Box.png/revision/latest?cb=20120823005645';
 			break;
 		    }
 	        }
@@ -89,7 +89,7 @@ function createSliders(sliders, items) {
             item = items[5];
             $scope.item=item.text;
 	    $scope.price=item.price;
-	    $scope.image='http://donate.etcs.me/static/images/dla-logo.png';
+	    $scope.image='http://vignette1.wikia.nocookie.net/fantendo/images/b/bc/MK7_Item_Box.png/revision/latest?cb=20120823005645';
         }]);
     // create sliders
     YUI().use('slider', function (Y) {

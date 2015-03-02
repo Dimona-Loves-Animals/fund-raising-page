@@ -1,9 +1,18 @@
 #!/usr/bin/env python
+__all__ = ["data",]
+
 from flask import Flask
+from flask.ext.babel import Babel
 app = Flask(__name__, template_folder='views')
+babel = Babel(app)
 
 # Configurations
 app.config.from_object('config')
+app.config.from_pyfile('data.py')
+#app.config['ITEMS'] = data.ITEMS
+#app.config.update(
+#    ITEMS = data.ITEMS,
+#)
 
 # Load views
 import views

@@ -20,6 +20,15 @@ body {
     }
 }
 
+.languages-rtl {
+    li {
+	&:not(:last-child):after {
+	    padding-right:5px;
+	    padding-left: 1px;
+	}
+    }
+}
+
 #slider-parent input {
     width: 100%;
 }
