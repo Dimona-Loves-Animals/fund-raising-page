@@ -1,3 +1,6 @@
+// save changes to local storage. not working fully yet.
+useLocalStorage = false;
+
 function createSlider(Y, text, i) {
 	// Function to update the input value from the Slider value
 	function updateInput( e ) {
@@ -39,7 +42,7 @@ function createSlider(Y, text, i) {
 
         slider.render("#slider"+i);
         // Subscribe to the Slider's valueChange event, passing the input as the 'this'
-        $("#slider-parent").append("<div class='col-sm-2'>"+'<div class="form-group"><div class="input-group"><span class="input-group-addon" id="basic-addon1">₪</span><input ng-change="change()" ng-init="slider'+i+'=2" min="0" max="200" ng-model="slider'+i+'" class="form-control" type="number" id="horiz_value'+i+'" value="2"></div></div></div>');
+        $("#slider-parent").append("<div class='col-sm-2'>"+'<div class="form-group"><div class="input-group"><span class="input-group-addon" id="basic-addon1">₪</span><input ng-change="change()" ng-init="slider'+i+'=2" min="0" max="200" ng-model="slider'+i+'" class="form-control" type="number" id="horiz_value'+i+'" name="horiz_value'+i+'" value="2"></div></div></div>');
         // restrict numbers
         document.getElementById('horiz_value'+i).onkeydown = function(e) {
             var key = e.keyCode ? e.keyCode : e.which;
@@ -58,8 +61,40 @@ function createSlider(Y, text, i) {
 	xInput.on( "mouseup", updateSlider );
 }
 
+/* jQuery.values: get or set all of the name/value pairs from child input controls   
+ * @argument data {array} If included, will populate all child controls.
+ * @returns element if data was provided, or array of values if not
+ */
+$.fn.values = function(data) {
+    var els = $(this).find(':input').get();
+
+    if(typeof data != 'object') {
+        // return all data
+        data = {};
+
+        $.each(els, function() {
+            if (this.name && !this.disabled && (this.checked
+                            || /select|textarea/i.test(this.nodeName)
+                            || /text|hidden|number|password/i.test(this.type))) {
+                data[this.name] = $(this).val();
+            }
+        });
+        return data;
+    } else {
+        $.each(els, function() {
+            if (this.name && data[this.name]) {
+                if(this.type == 'checkbox' || this.type == 'radio') {
+                    $(this).attr("checked", (data[this.name] == $(this).val()));
+                } else {
+                    $(this).val(data[this.name]);
+                }
+            }
+        });
+        return $(this);
+    }
+};
+
 function createSliders(sliders, items) {
-    console.log(items);
     angular.module('donateApp', [])
         .controller('donateController', ['$scope', function($scope) {
     	    $scope.sum = function() {
@@ -101,11 +136,28 @@ function createSliders(sliders, items) {
         $('.fa-spinner').hide();
         // start angular
         angular.bootstrap(document, ['donateApp']);
+
+	if (useLocalStorage) if (Modernizr.localstorage) {
+	    // console.log('window.localStorage is available!');
+	    $(':input').on('input change keyup', function(){
+    		localStorage.formData = JSON.stringify($('form').values());
+    	    });
+    	    if(localStorage.formData){
+    		$('form').values(JSON.parse(localStorage.formData));
+    		for (i = 2; i < sliders.length; i++) {
+    		    //$('#horiz_value'+i).trigger('input');
+	        }
+    	    }
+	}
         // then show form after bindings done
-        $('form .panel').show();
-        // and then slide the overall
-        $(".overall").slideDown("slow", function() {
-            // Animation complete.
+        //$("form .panel").animate({width:'toggle'},155, function() {
+        //$("form .panel").slideDown("slow", function() {
+        //$('form .panel').show();
+        $("form .panel").fadeIn("normal", function() {
+    	    // and then slide the overall
+    	    $(".overall").slideDown("slow", function() {
+        	// Animation complete.
+    	    });
         });
     });
 }
